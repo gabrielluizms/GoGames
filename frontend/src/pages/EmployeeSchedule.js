@@ -308,8 +308,8 @@ const EmployeeSchedule = () => {
                                 key={room.id}
                                 className="w-6 h-6 rounded flex items-center justify-center text-[10px] font-bold shadow-sm"
                                 style={{
-                                  backgroundColor: room.color,
-                                  color: parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
+                                  backgroundColor: room.color || '#888',
+                                  color: room.color ? (parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#fff'
                                 }}
                                 title={`${count} festa(s) - ${room.name}`}
                               >
