@@ -246,17 +246,17 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "2.0"
-  test_sequence: 3
+  version: "3.0"
+  test_sequence: 4
   run_ui: true
 
 test_plan:
   current_focus:
-    - "Multiple hall selection with checkboxes"
-    - "Payment methods in Portuguese dropdown"
-    - "Resizable fields in PDF contract editor"
-    - "Multiple hall selection support"
-    - "Payment methods in Portuguese"
+    - "Settings - Room Management API"
+    - "Events - Room Selection Backend"
+    - "Contract Generation - Room Variable"
+    - "Financial Report Generation"
+    - "Dashboard Stats API"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -270,3 +270,5 @@ agent_communication:
     message: "✅ CRITICAL BUG TESTING COMPLETED: Thoroughly tested the reported 'findDOMNode is not a function' error. The bug has been SUCCESSFULLY FIXED with the DraggableField component implementation using nodeRef. Complete test flow executed: 1) Login with admin/admin123 ✅, 2) Navigate to Settings ✅, 3) Select PDF Base mode ✅, 4) Upload PDF file ✅, 5) Add dynamic field (Nome do Cliente) ✅, 6) Field appears with success message 'Campo adicionado! Arraste para posicionar.' ✅, 7) Dragging functionality works perfectly ✅, 8) No findDOMNode errors ✅, 9) No white screen or crashes ✅. The nodeRef implementation in the separate DraggableField component has resolved the React 18 compatibility issue with react-draggable."
   - agent: "main"
     message: "NOVA TAREFA DE TESTE: Implementadas 3 melhorias no PartyHub: 1) Seleção múltipla de salões com checkboxes (não radio buttons), 2) Formas de pagamento em português (Débito, Crédito, Dinheiro, Transferência / Pix), 3) Campos redimensionáveis no PDF editor. Testar todas as funcionalidades com credenciais admin/admin123."
+  - agent: "testing"
+    message: "🔍 REGRESSION TESTING COMPLETED: Executed comprehensive regression test suite for PartyHub critical flows. CRITICAL BUG FOUND AND FIXED: Room field was showing '[object Object]' due to improper array serialization in backend. Fixed by adding Array.isArray() check and proper JSON.stringify() for room arrays. All 5 critical flows now working: 1) Settings/Room Management ✅, 2) Events/Room Selection ✅ (fixed), 3) Contract/@room Variable ✅, 4) Financial Report ✅, 5) Dashboard Stats ✅. New events properly handle both string ('amarelo') and array (['amarelo', 'laranja']) room formats. formatRooms() functions convert IDs to readable names in contracts and reports."
