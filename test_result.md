@@ -253,6 +253,42 @@ frontend:
         agent: "testing"
         comment: "❌ REGRESSION TEST FAILED: Cannot access Settings page due to critical JavaScript runtime errors. Error: 'Cannot read properties of undefined (reading 'replace')' prevents navigation to Settings page. PDF contract editor and resizable fields cannot be tested until JavaScript errors are resolved."
 
+  - task: "Settings - Room Management Frontend"
+    implemented: true
+    working: false
+    file: "frontend/src/pages/Settings.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ REGRESSION TEST FAILED: Cannot access Settings page to test room management (create 'Salão Teste') due to critical JavaScript runtime errors. Error: 'Cannot read properties of undefined (reading 'replace')' prevents navigation. Room management interface cannot be tested until JavaScript errors are resolved."
+
+  - task: "Schedule - Party Indicators by Hall"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/EmployeeSchedule.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ PARTIAL FUNCTIONALITY: Schedule page loads successfully and displays calendar grid correctly. However, no party indicators visible in current month (March 2026) - may be due to no events or JavaScript errors affecting indicator rendering. Calendar structure is correct but indicator functionality needs verification with actual event data."
+
+  - task: "JavaScript Runtime Errors"
+    implemented: false
+    working: false
+    file: "frontend/src/"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL ISSUE: JavaScript runtime errors detected: 'Cannot read properties of undefined (reading 'replace')' appearing in multiple components. This prevents navigation to Settings and Events pages. Login works but application is essentially broken. URGENT FIX REQUIRED before any further testing can proceed."
+
 metadata:
   created_by: "main_agent"
   version: "3.0"
