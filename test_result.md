@@ -219,9 +219,9 @@ frontend:
 
   - task: "Payment methods in Portuguese dropdown"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/pages/Events.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -231,6 +231,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ PAYMENT METHODS IN PORTUGUESE: Confirmed all Portuguese payment options present: Débito ✅, Crédito ✅, Dinheiro ✅, Transferência / Pix ✅. No English options (debit, credit, cash) found in the interface. Dropdown properly localized."
+      - working: false
+        agent: "testing"
+        comment: "❌ REGRESSION TEST FAILED: Cannot access Events page to test payment methods due to critical JavaScript runtime errors. Navigation to Events page broken by 'Cannot read properties of undefined (reading 'replace')' error. Feature cannot be verified until JavaScript errors are fixed."
 
   - task: "Resizable fields in PDF contract editor"
     implemented: true
