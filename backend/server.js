@@ -881,6 +881,34 @@ app.get('/api/reports/financial/:month', authenticateToken, async (req, res) => 
     const { month } = req.params; // formato: YYYY-MM
     const [year, monthNum] = month.split('-');
     
+    // Buscar configuração de salões para formatar nomes
+    const roomsSetting = await db.get('SELECT value FROM settings WHERE key = ?', ['rooms']);
+    const roomsConfig = roomsSetting ? JSON.parse(roomsSetting.value) : [
+      { id: 'amarelo', name: 'Salão Amarelo' },
+      { id: 'laranja', name: 'Salão Laranja' }
+    ];
+    
+    // Função para formatar salões (suporta string antiga e array novo)
+    const formatRoomsForReport = (roomData) => {
+      let roomIds = [];
+      if (typeof roomData === 'string') {
+        try {
+          roomIds = JSON.parse(roomData);
+        } catch {
+          roomIds = roomData ? [roomData] : [];
+        }
+      } else if (Array.isArray(roomData)) {
+        roomIds = roomData;
+      }
+      
+      const roomNames = roomIds.map(id => {
+        const room = roomsConfig.find(r => r.id === id);
+        return room ? room.name : id;
+      });
+      
+      return roomNames.join(' e ') || 'Não definido';
+    };
+    
     // Buscar todos os eventos do mês
     const events = await db.all(
       'SELECT * FROM events WHERE date LIKE ? ORDER BY date ASC',
