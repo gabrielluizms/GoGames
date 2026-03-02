@@ -553,19 +553,22 @@ const Events = () => {
                           // Suporta tanto string (dados antigos) quanto array (novo formato)
                           const eventRooms = Array.isArray(event.room) ? event.room : (event.room ? [event.room] : []);
                           return eventRooms.map(roomId => {
-                            const room = rooms.find(r => r.id === roomId) || rooms[0];
-                            return room ? (
+                            const room = rooms.find(r => r.id === roomId);
+                            if (!room || !room.color) return null;
+                            const colorHex = room.color.replace('#', '');
+                            const textColor = parseInt(colorHex, 16) > 0xffffff / 2 ? '#000' : '#fff';
+                            return (
                               <span 
                                 key={roomId}
                                 className="px-3 py-1 rounded-full text-xs font-bold"
                                 style={{
                                   backgroundColor: room.color,
-                                  color: parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
+                                  color: textColor
                                 }}
                               >
                                 {room.name}
                               </span>
-                            ) : null;
+                            );
                           });
                         })()}
                         <span className={`status-badge status-${event.payment_status}`}>
