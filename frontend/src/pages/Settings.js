@@ -497,8 +497,8 @@ const Settings = () => {
                 <div 
                   className="h-9 rounded-lg flex items-center justify-center text-sm font-semibold"
                   style={{ 
-                    backgroundColor: room.color,
-                    color: parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
+                    backgroundColor: room.color || '#888',
+                    color: room.color ? (parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#fff'
                   }}
                 >
                   {room.name}
