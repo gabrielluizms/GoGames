@@ -201,9 +201,9 @@ backend:
 frontend:
   - task: "Multiple hall selection with checkboxes"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/pages/Events.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
@@ -213,6 +213,9 @@ frontend:
       - working: true
         agent: "testing"
         comment: "✅ MULTIPLE HALL SELECTION WORKING: Confirmed checkboxes (not radio buttons) for hall selection. Found 3 hall-related checkboxes. Successfully tested multiple selection - both Amarelo and Laranja can be selected simultaneously. Interface shows 'Selecione o(s) Salão(ões)' with proper checkbox implementation."
+      - working: false
+        agent: "testing"
+        comment: "❌ REGRESSION TEST FAILED: Cannot access Events page due to critical JavaScript runtime errors. Error: 'Cannot read properties of undefined (reading 'replace')' prevents navigation to Events page. Login works but application navigation is broken. Multiple hall selection feature cannot be tested until JavaScript errors are resolved."
 
   - task: "Payment methods in Portuguese dropdown"
     implemented: true
