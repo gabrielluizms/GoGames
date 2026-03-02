@@ -457,8 +457,21 @@ app.post('/api/events', authenticateToken, async (req, res) => {
 });
 
 function parseEvent(event) {
+  // Parse room field properly
+  let parsedRoom = event.room;
+  if (typeof event.room === 'string' && event.room !== '[object Object]') {
+    try {
+      // Try to parse as JSON array first
+      parsedRoom = JSON.parse(event.room);
+    } catch {
+      // If not JSON, keep as string
+      parsedRoom = event.room;
+    }
+  }
+  
   return {
     ...event,
+    room: parsedRoom,
     extra_hours: event.extra_hours ? JSON.parse(event.extra_hours) : [],
     game_cards: event.game_cards ? JSON.parse(event.game_cards) : null,
     waiters: event.waiters ? JSON.parse(event.waiters) : null,
