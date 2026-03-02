@@ -1042,7 +1042,7 @@ app.get('/api/reports/financial/:month', authenticateToken, async (req, res) => 
       doc.text(`${index + 1}. ${event.client_name}`, { continued: false });
       doc.fontSize(10).fillColor('#666666');
       doc.text(`   Data: ${formatDateBR(event.date)} | Horário: ${event.start_time} - ${event.end_time}`);
-      doc.text(`   Tipo: ${event.event_type} | Salão: ${event.room}`);
+      doc.text(`   Tipo: ${event.event_type} | Salão: ${formatRoomsForReport(event.room)}`);
       
       // Mostrar Valor Total em destaque
       const totalValue = event.total_value || event.base_value;
