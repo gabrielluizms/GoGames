@@ -297,14 +297,15 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Settings - Room Management API"
-    - "Events - Room Selection Backend"
-    - "Contract Generation - Room Variable"
-    - "Financial Report Generation"
-    - "Dashboard Stats API"
-  stuck_tasks: []
+    - "JavaScript Runtime Errors"
+    - "Settings - Room Management Frontend"
+    - "Multiple hall selection with checkboxes"
+    - "Schedule - Party Indicators by Hall"
+  stuck_tasks:
+    - "JavaScript Runtime Errors"
+    - "Resizable fields in PDF contract editor"
   test_all: false
-  test_priority: "high_first"
+  test_priority: "stuck_first"
 
 agent_communication:
   - agent: "main"
