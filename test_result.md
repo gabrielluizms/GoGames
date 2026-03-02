@@ -239,7 +239,7 @@ frontend:
     implemented: true
     working: false
     file: "frontend/src/components/ContractPdfEditor.js"
-    stuck_count: 1
+    stuck_count: 2
     priority: "high"
     needs_retesting: false
     status_history:
@@ -249,6 +249,9 @@ frontend:
       - working: false
         agent: "testing"
         comment: "❌ RESIZABLE FIELDS NOT ACCESSIBLE: Could not access Settings page due to authentication redirect. PDF Base mode and resizable field interface not visible during testing. Settings URL redirects to login page, indicating potential routing or authentication issue."
+      - working: false
+        agent: "testing"
+        comment: "❌ REGRESSION TEST FAILED: Cannot access Settings page due to critical JavaScript runtime errors. Error: 'Cannot read properties of undefined (reading 'replace')' prevents navigation to Settings page. PDF contract editor and resizable fields cannot be tested until JavaScript errors are resolved."
 
 metadata:
   created_by: "main_agent"
