@@ -822,8 +822,8 @@ const Events = () => {
                       <span 
                         className={`px-3 py-1 rounded-full text-sm font-semibold transition-all ${isSelected ? 'ring-2 ring-offset-2 ring-blue-500' : ''}`}
                         style={{
-                          backgroundColor: room.color,
-                          color: parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff'
+                          backgroundColor: room.color || '#gray',
+                          color: room.color ? (parseInt(room.color.replace('#', ''), 16) > 0xffffff / 2 ? '#000' : '#fff') : '#000'
                         }}
                       >
                         {room.name}
