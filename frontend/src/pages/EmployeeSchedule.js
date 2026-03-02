@@ -137,9 +137,17 @@ const EmployeeSchedule = () => {
     const dayEvents = events.filter(e => e.date === dateStr);
     
     // Agrupar por salão e contar dinamicamente
+    // Suporta tanto array (novo) quanto string (dados antigos)
     const counts = {};
     rooms.forEach(room => {
-      counts[room.id] = dayEvents.filter(e => e.room === room.id).length;
+      counts[room.id] = dayEvents.filter(e => {
+        // Se room é array, verifica se contém o id do salão
+        if (Array.isArray(e.room)) {
+          return e.room.includes(room.id);
+        }
+        // Se room é string (formato antigo), compara diretamente
+        return e.room === room.id;
+      }).length;
     });
     
     return counts;
