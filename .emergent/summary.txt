@@ -1,0 +1,149 @@
+<analysis>
+The trajectory documents the iterative development of a Party Hub management system. The initial request was to build a full-stack application for a party hall, featuring modules for reservations, staff scheduling, basic finances, and a dashboard. The development began with a FastAPI (Python) backend, a React frontend, and a MongoDB database.
+
+The process involved building core features first, such as user authentication (JWT), event creation with time-conflict validation, and employee management. The frontend was built using React and Shadcn UI components, with pages for login, a main dashboard, events, employees, and settings.
+
+Throughout the development cycle, several feature enhancements were requested and implemented. These include:
+- Adding multiple party rooms and updating the conflict logic to be room-specific.
+- Creating a dedicated page for employee scheduling.
+- Implementing full user management (create, list, edit, delete) with role-based permissions and safety checks (preventing the deletion of the last admin).
+- Integrating pre-configured time packages into the reservation form.
+- Adding visual indicators to the schedule calendar to show daily event density.
+
+A significant portion of the work involved diagnosing and fixing bugs, many of which were related to date and timezone handling ( errors, off-by-one-day displays). A dedicated  module was created to standardize date manipulation and resolve these recurring issues.
+
+The final interaction shows the user struggling to set up and run the multi-technology stack (React, FastAPI, MongoDB) in a local environment. This complexity led to a new major request: to migrate the entire backend from Python/FastAPI/MongoDB to a unified Node.js/Express stack with an embedded SQLite database, aiming to simplify the project's setup and maintenance. The AI engineer acknowledged this request and was about to begin the migration.
+</analysis>
+
+<product_requirements>
+The user requires a comprehensive web-based management system for a party hall that also features an arcade. The primary goal is to centralize and automate event booking, staff scheduling, and basic financial tracking.
+
+**Core Modules & Features:**
+1.  **Authentication:** A simple username/password login system with two user roles: Admin and Common User. Admins have full access, including a Settings page, while common users do not.
+2.  **Reservations Management:**
+    *   Create, edit, and cancel events with details like client name, event type, date, start/end times, and notes.
+    *   Support for two distinct party rooms (Salão Amarelo, Salão Laranja).
+    *   Automatic conflict detection: Block overlapping bookings in the *same room* but allow simultaneous events in *different rooms*.
+    *   A calendar view to visualize monthly, weekly, and daily bookings.
+3.  **Financials:**
+    *   Track the total value of each reservation and its payment status (e.g., Pending, Paid).
+    *   Log detailed financial items, such as charges for extra event hours or the sale of extra arcade game cards.
+4.  **Staff & Scheduling:**
+    *   A module to register fixed and freelance employees with their roles (e.g., Monitor, Copeira).
+    *   A dedicated Employee Schedule page with a calendar to assign staff to specific days and shifts. This view should visually indicate the number of events scheduled per room for each day to aid in planning.
+5.  **Dashboard:** A central landing page showing upcoming parties, daily events, scheduled staff, and a summary of financial status (e.g., total revenue). It should feature an alert system for upcoming events.
+6.  **Settings (Admin only):** A configuration panel to manage user accounts (create, list, edit, delete), define standard time packages (e.g., Morning, Afternoon), and set other system parameters.
+</product_requirements>
+
+<key_technical_concepts>
+- **Full-Stack Architecture:** React (frontend), FastAPI (backend), MongoDB (database).
+- **Authentication:** JSON Web Tokens (JWT) for securing API endpoints and managing user sessions.
+- **Backend (Python):**
+  - **FastAPI:** Web framework for building APIs.
+  - **Pydantic:** Data validation and settings management.
+  - **Motor:** Asynchronous Python driver for MongoDB.
+  - **Passlib/PyJWT:** For password hashing and JWT management.
+- **Frontend (JavaScript/React):**
+  - **React:** UI library for building components.
+  - **Shadcn/UI:** Component library for UI elements like calendars, dialogs, inputs, and buttons.
+  - **React Router:** For client-side routing.
+  - **Axios:** For making HTTP requests to the backend.
+  - **Date Handling:** Critical focus on fixing timezone and parsing issues using custom utility functions.
+</key_technical_concepts>
+
+<code_architecture>
+The application follows a standard client-server architecture with a separate frontend and backend.
+
+**Directory Structure:**
+
+
+**File Summaries & Key Changes:**
+
+-   **/app/backend/server.py**:
+    -   **Importance:** This is the core of the backend, defining all API endpoints, data models (using Pydantic), and business logic.
+    -   **Changes:** Initially created to handle all CRUD operations for events, users, and employees. It was significantly modified to:
+        -   Add JWT-based authentication.
+        -   Implement time-conflict validation for event bookings.
+        -   Update the conflict logic to be room-specific.
+        -   Add endpoints for a new employee scheduling system.
+        -   Expand user management to include list, update, and delete operations.
+        -   Fix a bug in the days remaining calculation for dashboard alerts.
+
+-   **/app/frontend/src/App.js**:
+    -   **Importance:** The main entry point for the React application. It manages routing, authentication state (via ), and sets up global components like .
+    -   **Changes:** Updated to add routes for new pages like  and  and to integrate the  component.
+
+-   **/app/frontend/src/pages/Events.js**:
+    -   **Importance:** A key page for managing event reservations. It includes a calendar view, a list of daily events, and a dialog form for creating/editing events.
+    -   **Changes:** This file underwent extensive modifications:
+        -   Added form fields for extra hours and game cards.
+        -   Implemented a radio button group for selecting the party room (Salão Amarelo / Salão Laranja).
+        -   Added a select dropdown to auto-fill start/end times based on pre-configured time packages.
+        -   Fixed multiple date-related bugs, including Invalid Time Value errors, by integrating a custom date utility.
+        -   Added UI to display the selected room on event cards.
+
+-   **/app/frontend/src/pages/Settings.js**:
+    -   **Importance:** The admin-only page for system configuration.
+    -   **Changes:** Evolved from a simple settings page to a full-featured user management console.
+        -   UI was added to create, list, edit, and delete users.
+        -   Logic was implemented to prevent the deletion of the last remaining administrator account.
+
+-   **/app/frontend/src/pages/EmployeeSchedule.js**:
+    -   **Importance:** A new page created to manage staff schedules.
+    -   **Changes:** Built from scratch, it features a calendar view. It was later enhanced to fetch event data and display visual indicators (colored badges) on each day, showing the number of events booked in each room to help with staffing decisions. Date handling bugs were also fixed here.
+
+-   **/app/frontend/src/utils/dateUtils.js**:
+    -   **Importance:** Created specifically to solve recurring, critical bugs related to JavaScript's handling of dates and timezones.
+    -   **Changes:** This new file provides helper functions for safely parsing and formatting dates, ensuring consistent behavior across the application and preventing crashes.
+</code_architecture>
+
+<pending_tasks>
+- The primary and most significant pending task is the complete migration of the application's backend. The user has explicitly requested to move from the current **Python/FastAPI/MongoDB** stack to a unified **Node.js/Express/SQLite** stack to simplify local development and deployment. This involves rewriting the entire backend logic in JavaScript/Node.js.
+</pending_tasks>
+
+<current_work>
+The AI engineer was in the process of addressing the user's difficulties with running the application locally. The user reported issues with environment variables ( file), Python dependencies failing to install on Windows (the  package), and confusion about how to start the separate backend and frontend servers.
+
+After providing detailed step-by-step instructions for the local setup, the user expressed frustration with the complexity of managing a multi-language stack (Python and Node.js) and a separate database server (MongoDB).
+
+In response, the user made a final, major request: to completely refactor the backend. The request is to replace Python/FastAPI and MongoDB with a Node.js/Express backend and an embedded SQLite database. This would unify the entire application under JavaScript and eliminate the need for an external database server, simplifying the setup to just running two npm <command>
+
+Usage:
+
+npm install        install all the dependencies in your project
+npm install <foo>  add the <foo> dependency to your project
+npm test           run this project's tests
+npm run <foo>      run the script named <foo>
+npm <command> -h   quick help on <command>
+npm -l             display usage info for all commands
+npm help <term>    search for help on <term>
+npm help npm       more involved overview
+
+All commands:
+
+    access, adduser, audit, bugs, cache, ci, completion,
+    config, dedupe, deprecate, diff, dist-tag, docs, doctor,
+    edit, exec, explain, explore, find-dupes, fund, get, help,
+    help-search, hook, init, install, install-ci-test,
+    install-test, link, ll, login, logout, ls, org, outdated,
+    owner, pack, ping, pkg, prefix, profile, prune, publish,
+    query, rebuild, repo, restart, root, run-script, sbom,
+    search, set, shrinkwrap, star, stars, start, stop, team,
+    test, token, uninstall, unpublish, unstar, update, version,
+    view, whoami
+
+Specify configs in the ini-formatted file:
+    /root/.npmrc
+or on the command line via: npm <command> --key=value
+
+More configuration info: npm help config
+Configuration fields: npm help 7 config
+
+npm@10.8.2 /usr/lib/node_modules/npm commands.
+
+The very last action taken by the AI engineer was to acknowledge this request and state the intention to begin the migration. No code for the new Node.js backend has been written yet. The immediate work is to plan and execute this architectural overhaul.
+</current_work>
+
+<optional_next_step>
+Begin the backend migration by creating the new project structure for a Node.js/Express application, including setting up a basic server, installing dependencies like Express and an SQLite driver (e.g., ), and defining the initial database schema.
+</optional_next_step>
