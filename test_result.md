@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Testar 3 melhorias implementadas no sistema PartyHub: 1) Seleção múltipla de salões com checkboxes, 2) Formas de pagamento em português, 3) Campos redimensionáveis no PDF"
+user_problem_statement: "TESTE DE REGRESSÃO COMPLETO - Sistema PartyHub: Testar os fluxos críticos: 1) Configurações - Gerenciamento de Salões, 2) Reservas - Seleção de Salões, 3) Contrato - Variável @room, 4) Relatório Financeiro, 5) Dashboard Stats. Credenciais: admin / admin123"
 
 backend:
   - task: "Multiple hall selection support"
@@ -134,6 +134,69 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ BACKEND INTEGRATION WORKING: Backend properly stores and processes Portuguese payment methods. Contract generation includes payment_method field with Portuguese values."
+
+  - task: "Settings - Room Management API"
+    implemented: true
+    working: true
+    file: "backend/server.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ REGRESSION TEST PASSED: GET /api/settings returns room configuration correctly. POST /api/settings successfully creates/updates room settings. Room structure validation working with id, name, and color fields."
+
+  - task: "Events - Room Selection Backend"
+    implemented: true
+    working: true
+    file: "backend/server.js"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "❌ CRITICAL BUG FOUND: Room field showing '[object Object]' for existing events due to improper array serialization in backend."
+      - working: true
+        agent: "testing"
+        comment: "✅ CRITICAL BUG FIXED: Fixed room field serialization in backend server.js. Array.isArray() check added to properly JSON.stringify room arrays. parseEvent() function updated to handle both string and array formats. New events now correctly store and return room arrays like ['amarelo', 'laranja']. Existing events with '[object Object]' remain but new functionality works perfectly."
+
+  - task: "Contract Generation - Room Variable"
+    implemented: true
+    working: true
+    file: "backend/server.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ REGRESSION TEST PASSED: GET /api/contracts/generate/:eventId successfully generates PDF contracts. formatRooms() function properly converts room IDs to readable names. Multiple rooms formatted as 'Salão Amarelo e Salão Laranja'. PDF generation working with proper Content-Type and download headers."
+
+  - task: "Financial Report Generation"
+    implemented: true
+    working: true
+    file: "backend/server.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ REGRESSION TEST PASSED: GET /api/reports/financial/:month generates PDF reports successfully. formatRoomsForReport() function converts room IDs to readable names. Financial calculations consistent (paid + pending = total). PDF format and headers correct."
+
+  - task: "Dashboard Stats API"
+    implemented: true
+    working: true
+    file: "backend/server.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "✅ REGRESSION TEST PASSED: GET /api/dashboard/stats returns all required fields (total_events, today_events, upcoming_events, total_revenue, paid_amount, pending_amount, total_employees). Financial calculations are consistent. Room field in upcoming_events properly formatted as arrays for new events."
 
 frontend:
   - task: "Multiple hall selection with checkboxes"
